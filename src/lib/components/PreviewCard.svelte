@@ -1,7 +1,6 @@
 <script>
 	export let img = '';
 	export let title = '';
-	export let alt = '';
 </script>
 
 <div
@@ -9,7 +8,7 @@
 		bg-white border-2 border-c-black drop-shadow-md"
 >
 	<h1 class="shrink-0 title">{title}</h1>
-	<img class="flex-grow object-cover" src={img} {alt} />
+	<img class="flex-grow object-cover" src={img?.url} alt={img?.name} />
 </div>
 
 <style>

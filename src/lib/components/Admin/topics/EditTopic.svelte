@@ -1,25 +1,91 @@
 <script>
+	import UploadFile from './../utils/edit/UploadFile.svelte';
 	import { db } from '$lib/firebaseConfig/firebase';
-	import { collection, doc } from 'firebase/firestore';
-	import EditWindow from '../utils/EditWindow.svelte';
+	import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
 
-	export let selectedEnvironment = '';
 	export let currentTopic = {
 		title: '',
 		description: '',
-		id: 'null',
+		id: null,
 		img: { name: '', url: '' },
 		color: ''
 	};
+	export let onChange;
+	export let onRemove;
+	export let selectedEnvId;
 
-	let fields = [
-		{ name: 'Title', getter: 'title', type: 'text' },
-		{ name: 'Description', getter: 'description', type: 'textarea' },
-		{ name: 'Image', getter: 'img', type: 'img' },
-		{ name: 'Color', getter: 'color', type: 'col' }
-	];
-	$: docRef = doc(db, 'card-envs', selectedEnvironment, 'topics', currentTopic.id);
-	let collectionRef = collection(db, 'card-envs', selectedEnvironment, 'topics');
+	$: docRef = doc(db, 'card-envs', selectedEnvId, 'topics', currentTopic.id);
+
+	const updateDb = (data) => {
+		setDoc(docRef, data)
+			.then((docRef) => {
+				console.log(
+					'Entire Document has been updated successfully',
+					'currentTopicId'
+					// currentTopic.id,
+					// 'selectedenvid',
+					// selectedEnvId
+				);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 </script>
 
-<EditWindow bind:currentElement={currentTopic} {fields} {docRef} {collectionRef} />
+<form class="flex-grow flex flex-col" on:submit={(e) => e.preventDefault()}>
+	<div class="mb-3 ">
+		<div><label for="title">Title:</label></div>
+		<input
+			value={currentTopic.title}
+			on:input={(e) => {
+				const newTopic = { ...currentTopic, title: e.target.value };
+				updateDb(newTopic);
+				onChange(newTopic);
+			}}
+			class="w-full"
+			name="title"
+			placeholder="title"
+		/>
+	</div>
+	<div>
+		<div><label for="description">Description:</label></div>
+		<textarea
+			value={currentTopic.description}
+			on:input={(e) => {
+				const newTopic = { ...currentTopic, description: e.target.value };
+				updateDb(newTopic);
+				onChange(newTopic);
+			}}
+			class="border w-full"
+			name="description"
+			placeholder="description"
+		/>
+	</div>
+	<div>
+		<p>Image</p>
+		<UploadFile
+			url={currentTopic.img?.url}
+			onChange={(url, name) => {
+				const newEnv = { ...currentTopic, img: { name, url } };
+				onChange(newEnv);
+				updateDb(newEnv);
+			}}
+		/>
+	</div>
+	<div class="mt-auto">
+		<button
+			class="del-btn w-full"
+			on:click={() => {
+				deleteDoc(docRef);
+				onRemove(currentTopic.id);
+			}}>Delete</button
+		>
+	</div>
+</form>
+
+<style>
+	input {
+		@apply border-2 p-1;
+	}
+</style>

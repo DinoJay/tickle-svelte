@@ -4,7 +4,7 @@
 	import { collection, doc } from 'firebase/firestore';
 	import Panel from '$lib/components/Admin/Panel.svelte';
 	import Environments from '$lib/components/Admin/environments/Environments.svelte';
-	import Topics from '$lib/components/Admin/topics/Topics.svelte';
+	import Topics from '$lib/components/Admin/Topics/index.svelte';
 	import Cards from '$lib/components/Admin/cards/Cards.svelte';
 	import Map from '$lib/components/Admin/map/Map.svelte';
 	import GeoCatchingValidation from '$lib/components/Admin/geoCaching/GeoCachingValidation.svelte';
@@ -25,6 +25,7 @@
 		selectedEnvId = id;
 	};
 	$: selectedEnv = envs.find((d) => d.id === selectedEnvId);
+	$: console.log('envs', envs);
 	/**
 	 * @type {null}
 	 */
@@ -40,7 +41,7 @@
 		class="grid grid-cols-1 gap-3 m-2
         lg:grid-cols-2 lg:m-5"
 	>
-		<Panel title={'Environments'}>
+		<Panel title="Environments">
 			<Environments
 				{envs}
 				{selectedEnv}
@@ -49,11 +50,11 @@
 			/>
 		</Panel>
 
-		<!-- <Panel title={'Topics'} {selectedEnvironment}>
-			<Topics {selectedEnvironment} addButtonContent={'Add new topic'} />
+		<Panel title={'Topics'}>
+			<Topics {selectedEnvId} />
 		</Panel>
 
-		<Panel title={'Cards'} {selectedEnvironment}>
+		<!-- <Panel title={'Cards'} {selectedEnvironment}>
 			<Cards {selectedEnvironment} bind:selectedCard addButtonContent={'Add new card'} />
 		</Panel>
 

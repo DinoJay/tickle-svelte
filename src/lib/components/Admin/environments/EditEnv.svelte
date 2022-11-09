@@ -1,5 +1,4 @@
 <script>
-	import { LOGNAME } from '$env/static/private';
 	import Logo from '$lib/components/navigationBar/Logo.svelte';
 	import { db } from '$lib/firebaseConfig/firebase';
 	import { collection, doc, updateDoc, setDoc } from 'firebase/firestore';

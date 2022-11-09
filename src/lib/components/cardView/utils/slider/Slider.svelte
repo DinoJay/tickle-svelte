@@ -1,6 +1,6 @@
 <script>
 	import { afterUpdate } from 'svelte';
-	import PreviewCard from '$lib/components/cardView/utils/slider/PreviewCard.svelte';
+	import PreviewCard from '$lib/components/PreviewCard.svelte';
 	import LightBox from '$lib/components/utils/LightBox.svelte';
 	import Card from '$lib/components/card/Card.svelte';
 

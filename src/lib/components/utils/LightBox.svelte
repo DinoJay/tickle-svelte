@@ -34,7 +34,7 @@
 				</div>
 			{/if}
 
-			<div class="" style="height:{height}px;width:{width}px">
+			<div class="flex flex-col" style="height:{height}px;width:{width}px">
 				<slot />
 			</div>
 		</div>

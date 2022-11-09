@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 
-	import PreviewCard from '$lib/components/cardView/utils/slider/PreviewCard.svelte';
+	import PreviewCard from '$lib/components/PreviewCard.svelte';
 	import * as d3 from 'd3';
 	import { v4 as uuidv4 } from 'uuid';
 	import LightBox from '$lib/components/utils/LightBox.svelte';

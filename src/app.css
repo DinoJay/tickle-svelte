@@ -46,3 +46,8 @@
 		max-height: 1000px;
 	}
 }
+
+.del-btn {
+
+	@apply bg-red-400 text-white p-2
+}
