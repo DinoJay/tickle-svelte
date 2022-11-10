@@ -36,7 +36,7 @@
 	</div>
 
 	<!-- Body's block -->
-	<div class="h-[37rem] w-full p-2">
+	<div class="h-[37rem] w-full p-2 flex flex-col">
 		<slot />
 	</div>
 </div>

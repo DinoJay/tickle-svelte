@@ -5,6 +5,7 @@
 	import EditEnvironment from './EditEnv.svelte';
 	import { map } from 'd3';
 	import Logo from '$lib/components/navigationBar/Logo.svelte';
+	import CreateEnv from './CreateEnv.svelte';
 
 	/**
 	 * @type {any[]}
@@ -13,12 +14,10 @@
 	/**
 	 * @type {import("@firebase/firestore").Firestore}
 	 */
-	export let curEnvDbRef;
 	/**
 	 * @type {{ id: any; } | null}
 	 */
 	export let selectedEnv = null;
-	export let title = '';
 	/**
 	 * @type {(arg0: any) => void}
 	 */
@@ -29,6 +28,7 @@
 	export let onSelectEnv;
 
 	let lbOpen = false;
+	let nlbOpen = false;
 
 	const onEnvClick = (/** @type {{ id: string; }} */ env) => {
 		if (selectedEnv?.id !== env.id) {
@@ -39,7 +39,7 @@
 	};
 </script>
 
-<div class="h-[35rem] overflow-auto">
+<div class="h-[35rem] overflow-auto flex flex-col">
 	{#each envs as env}
 		<div class="flex mb-2">
 			<button
@@ -67,6 +67,7 @@
 			{/if}
 		</div>
 	{/each}
+	<button class="create-btn mt-auto" on:click={() => (nlbOpen = true)}>Create Env</button>
 </div>
 
 <LightBox isOpen={lbOpen} close={() => (lbOpen = false)}>
@@ -81,6 +82,15 @@
 				return e;
 			});
 			onChange(newEnvs);
+		}}
+	/>
+</LightBox>
+
+<LightBox isOpen={nlbOpen} close={() => (nlbOpen = false)}>
+	<CreateEnv
+		onChange={(/** @type {any} */ newEnv) => {
+			onChange([...envs, newEnv]);
+			nlbOpen = false;
 		}}
 	/>
 </LightBox>

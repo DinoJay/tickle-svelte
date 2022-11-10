@@ -48,6 +48,9 @@
 }
 
 .del-btn {
-
 	@apply bg-red-400 text-white p-2
+}
+
+.create-btn {
+	@apply bg-green-500 text-white p-2 drop-shadow-sm
 }

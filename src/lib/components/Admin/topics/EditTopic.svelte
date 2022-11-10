@@ -19,13 +19,13 @@
 	const updateDb = (data) => {
 		setDoc(docRef, data)
 			.then((docRef) => {
-				console.log(
-					'Entire Document has been updated successfully',
-					'currentTopicId'
-					// currentTopic.id,
-					// 'selectedenvid',
-					// selectedEnvId
-				);
+				// console.log(
+				// 	'Entire Document has been updated successfully',
+				// 	'currentTopicId'
+				// 	// currentTopic.id,
+				// 	// 'selectedenvid',
+				// 	// selectedEnvId
+				// );
 			})
 			.catch((error) => {
 				console.log(error);
@@ -67,15 +67,15 @@
 		<UploadFile
 			url={currentTopic.img?.url}
 			onChange={(url, name) => {
-				const newEnv = { ...currentTopic, img: { name, url } };
-				onChange(newEnv);
-				updateDb(newEnv);
+				const newTopic = { ...currentTopic, img: { name, url } };
+				onChange(newTopic);
+				updateDb(newTopic);
 			}}
 		/>
 	</div>
 	<div class="mt-auto">
 		<button
-			class="del-btn w-full"
+			class="del-btn w-full "
 			on:click={() => {
 				deleteDoc(docRef);
 				onRemove(currentTopic.id);

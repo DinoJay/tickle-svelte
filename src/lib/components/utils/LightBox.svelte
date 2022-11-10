@@ -26,7 +26,7 @@
 	>
 		<div on:keydown={() => null} class="m-auto bg-white p-3" on:click={(e) => e.stopPropagation()}>
 			{#if !isMandatory}
-				<div class=" flex">
+				<div class=" flex mb-3">
 					<div class="text-xl">{title}</div>
 					<button on:click={close} class=" ml-auto">
 						<WindowClose size="1.5em" />

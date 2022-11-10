@@ -4,13 +4,12 @@
 	import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 	import { storage } from '$lib/firebaseConfig/firebase';
 	import { v4 as uuidv4 } from 'uuid';
-	import ImgMarker from '$lib/components/map/markers/ImgMarker.svelte';
 
 	/**
 	 * @type {null}
 	 */
 	export let url = null;
-	export let onChange = (/** @type {string} */ e, /** @type {string} */ _fname) => null;
+	export let onChange = (/** @type {string} */ e, /** @type {string} */ _fname) => undefined;
 
 	/**
 	 * @type {HTMLInputElement}

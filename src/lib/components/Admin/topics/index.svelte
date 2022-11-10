@@ -5,7 +5,6 @@
 	import PreviewTopic from './PreviewT.svelte';
 	export let selectedEnvId = null;
 
-	let isLightBoxOpen = false;
 	let currentTopic = {
 		title: '',
 		description: '',
@@ -29,7 +28,7 @@
 	$: selectedTopic = topics.find((d) => d.id === selectedTopicId);
 </script>
 
-<div class="flex flex-wrap gap-3 overflow-auto">
+<div class="flex flex-col flex-grow">
 	{#if loading}
 		<div>Loading...</div>
 	{/if}

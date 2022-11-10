@@ -14,7 +14,7 @@
 
 	$: docRef = doc(db, 'card-envs', env.id);
 	$: console.log('db env', env);
-	let collectionRef = collection(db, 'card-envs');
+	// let collectionRef = collection(db, 'card-envs');
 	let imgUrl = null;
 	const updateDb = (data) => {
 		setDoc(docRef, data)
