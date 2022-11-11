@@ -3,72 +3,33 @@
 	import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 	import { onMount } from 'svelte';
 
-	export let currentCard = {};
-	export let selectedEnvironment = '';
-	export let docRef = null;
+	export let selectedCardId = {};
+	export let selectedEnvId = '';
 
 	let topics = [];
-	let selectedTopics = [];
+	let selectedTopicIds = [];
 
 	let height = 600;
 	let width = 400;
 
-	/**
-	 * LightBox height width for mobile
-	 */
-	onMount(() => {
-		if (window.innerWidth < width) width = window.innerWidth;
-		if (window.innerHeight < height) height = window.innerHeight;
-	});
-
-	/**
-	 * Get all the topics from the environment
-	 */
-	getDocs(collection(db, 'card-envs', selectedEnvironment, 'topics')).then((snap) => {
-		topics = snap.docs.map((doc) => {
-			return doc.data();
+	$: docRef = doc(db, 'card-envs', selectedEnvId, 'cards', selectedCardId);
+	$: getDoc(docRef).then((snap) => {
+		getDocs(collection(db, 'card-envs', selectedEnvId, 'topics')).then((snap) => {
+			topics = snap.docs.map((doc) => doc.data());
+			selectedTopicIds = snap.data()?.topics;
 		});
 	});
 
-	/**
-	 * Get all the topics from the card
-	 */
-	if (currentCard.id) {
-		getDoc(doc(db, 'card-envs', selectedEnvironment, 'cards', currentCard.id)).then((snap) => {
-			if (snap.data()?.topics.length > 0) {
-				let topicsId = snap.data()?.topics;
-				// Get all the topics from the topics id of the card
-				getDocs(collection(db, 'card-envs', selectedEnvironment, 'topics')).then((snap) => {
-					const topics = snap.docs.map((doc) => {
-						return doc.data();
-					});
-					topics.forEach((topic) => {
-						if (topicsId.includes(topic.id)) selectedTopics = [...selectedTopics, topic];
-					});
-				});
-			}
-		});
-	}
-
-	/**
-	 * Add the selected topic to the card
-	 * @param topic
-	 */
 	const addTopic = (topic) => {
-		let exists = selectedTopics.find((t) => t.id == topic.id);
+		let exists = selectedTopicIds.find((id) => id == topic.id);
 		if (exists) return;
-		selectedTopics = [...selectedTopics, topic];
-		let topicsId = selectedTopics.map((topic) => topic.id);
+		selectedTopicIds = [...selectedTopicIds, topic.id];
 
 		updateDoc(docRef, {
-			topics: topicsId
+			topics: selectedTopicIds
 		});
 	};
 
-	/**
-	 * Remove the topic from the card
-	 * @param topic
-	 */
 	const removeTopic = (topic) => {
 		selectedTopics.splice(selectedTopics.indexOf(topic), 1);
 		selectedTopics = [...selectedTopics];

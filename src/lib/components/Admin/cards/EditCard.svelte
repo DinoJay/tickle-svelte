@@ -1,13 +1,11 @@
 <script>
+	import Logo from '$lib/components/navigationBar/Logo.svelte';
 	import LightBox from '$lib/components/utils/LightBox.svelte';
 	import { db } from '$lib/firebaseConfig/firebase';
 	import { collection, doc } from 'firebase/firestore';
-	import EditWindow from '../utils/EditWindow.svelte';
-	import ActivityCard from './edit/activity/ActivityCard.svelte';
-	import EditLinks from './edit/EditLinks.svelte';
-	import TopicsCard from './edit/topics/TopicsCard.svelte';
+	import TopicsCard from './edit/EditCardTopics/index.svelte';
 
-	export let selectedEnvironment = '';
+	export let selectedEnvId;
 	export let currentCard = {
 		id: 'null',
 		title: '',
@@ -18,22 +16,22 @@
 		loc: { longitude: 4.39, latitude: 50.82 }
 	};
 
-	let fields = [
-		{ name: 'Title', getter: 'title', type: 'text' },
-		{ name: 'Description', getter: 'description', type: 'textarea' },
-		{ name: 'Image', getter: 'img', type: 'img' }
-	];
-	$: docRef = doc(db, 'card-envs', selectedEnvironment, 'cards', currentCard.id);
-	const collectionRef = collection(db, 'card-envs', selectedEnvironment, 'cards');
+	$: console.log('currentCard', currentCard.id);
+	$: docRef = doc(db, 'card-envs', selectedEnvId, 'cards', currentCard.id);
+	$: collectionRef = collection(db, 'card-envs', selectedEnvId, 'cards');
 
-	$: console.log('currentCard', currentCard);
+	const TITLE = 'title';
+	const TOPICS = 'topic';
+	const LINKS = 'links';
+	const DESCR = 'descr';
+	const ACTIVITY = 'activity';
 
-	let openTopics = false;
-	let openActivity = false;
-	let openLinks = false;
+	let selectedField;
+
+	let openField;
 </script>
 
-<EditWindow bind:currentElement={currentCard} {fields} bind:docRef {collectionRef}>
+<div class="flex flex-wrap">
 	<button
 		class="h-[36px] w-[40%] mt-[5%] mx-auto 
 			border border-c-black 
@@ -60,14 +58,14 @@
 		Activity
 	</button>
 
-	<LightBox isOpen={openTopics} close={() => (openTopics = false)}>
-		<TopicsCard {selectedEnvironment} bind:currentCard {docRef} />
+	<LightBox isOpen={selectedField === TOPICS} close={() => (openTopics = false)}>
+		<EditCardTopics {selectedEnvId} selectedCardId={currentCard.id} />
 	</LightBox>
 
-	<LightBox isOpen={openLinks} close={() => (openLinks = false)}>
+	<!-- <LightBox isOpen={openLinks} close={() => (openLinks = false)}>
 		<EditLinks {selectedEnvironment} bind:currentCard {docRef} />
 	</LightBox>
 	<LightBox isOpen={openActivity} close={() => (openActivity = false)}>
 		<ActivityCard {selectedEnvironment} bind:currentCard {docRef} />
-	</LightBox>
-</EditWindow>
+	</LightBox> -->
+</div>

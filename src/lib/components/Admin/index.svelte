@@ -5,7 +5,7 @@
 	import Panel from '$lib/components/Admin/Panel.svelte';
 	import Environments from '$lib/components/Admin/environments/Environments.svelte';
 	import Topics from '$lib/components/Admin/Topics/index.svelte';
-	import Cards from '$lib/components/Admin/cards/Cards.svelte';
+	import Cards from '$lib/components/Admin/cards/index.svelte';
 	import Map from '$lib/components/Admin/map/Map.svelte';
 	import GeoCatchingValidation from '$lib/components/Admin/geoCaching/GeoCachingValidation.svelte';
 	// @ts-ignore
@@ -26,14 +26,8 @@
 	};
 	$: selectedEnv = envs.find((d) => d.id === selectedEnvId);
 	$: console.log('envs', envs);
-	/**
-	 * @type {null}
-	 */
-	let selectedCard = null;
-	// $: curEnvDbRef = doc(db, 'card-envs', selectedEnvId);
 
-	// const envsPromise = loadCardEnvironments();
-	// console.log('promise', envsPromise);
+	let selectedCardId = null;
 </script>
 
 {#if $store?.currentUser?.admin}
@@ -54,11 +48,11 @@
 			<Topics {selectedEnvId} />
 		</Panel>
 
-		<!-- <Panel title={'Cards'} {selectedEnvironment}>
-			<Cards {selectedEnvironment} bind:selectedCard addButtonContent={'Add new card'} />
+		<Panel title={'Cards'}>
+			<Cards {selectedEnvId} />
 		</Panel>
 
-		<Panel
+		<!-- <Panel
 			title={`Map ${!selectedCard ? '- Please select a card!' : ''}`}
 			selectedEnvironment={selectedCard}
 		>

@@ -1,9 +1,12 @@
 <script>
 	export let img = '';
 	export let title = '';
+	export let onClick = (d) => d;
 </script>
 
 <div
+	on:click={onClick}
+	on:keydown={onClick}
 	class="flex flex-col h-36 w-28 p-2 relative overflow-hidden
 		bg-white border-2 border-c-black drop-shadow-md"
 >
