@@ -1,7 +1,6 @@
 <script>
 	import { db } from '$lib/firebaseConfig/firebase';
 	import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
-	import { onMount } from 'svelte';
 
 	export let selectedCardId = {};
 	export let selectedEnvId = '';

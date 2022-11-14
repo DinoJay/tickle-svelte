@@ -2,6 +2,7 @@
 	import UploadFile from './../utils/edit/UploadFile.svelte';
 	import { db } from '$lib/firebaseConfig/firebase';
 	import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
+	import { v4 as uuidv4 } from 'uuid';
 
 	export let currentTopic = {
 		title: '',
@@ -11,26 +12,10 @@
 		color: ''
 	};
 	export let onChange;
+	export let onCreate;
 	export let onRemove;
-	export let selectedEnvId;
 
-	$: docRef = doc(db, 'card-envs', selectedEnvId, 'topics', currentTopic.id);
-
-	const updateDb = (data) => {
-		setDoc(docRef, data)
-			.then((docRef) => {
-				// console.log(
-				// 	'Entire Document has been updated successfully',
-				// 	'currentTopicId'
-				// 	// currentTopic.id,
-				// 	// 'selectedenvid',
-				// 	// selectedEnvId
-				// );
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
+	// $: id = uuidv4();
 </script>
 
 <form class="flex-grow flex flex-col" on:submit={(e) => e.preventDefault()}>
@@ -40,7 +25,6 @@
 			value={currentTopic.title}
 			on:input={(e) => {
 				const newTopic = { ...currentTopic, title: e.target.value };
-				updateDb(newTopic);
 				onChange(newTopic);
 			}}
 			class="w-full"
@@ -54,7 +38,6 @@
 			value={currentTopic.description}
 			on:input={(e) => {
 				const newTopic = { ...currentTopic, description: e.target.value };
-				updateDb(newTopic);
 				onChange(newTopic);
 			}}
 			class="border w-full"
@@ -69,18 +52,25 @@
 			onChange={(url, name) => {
 				const newTopic = { ...currentTopic, img: { name, url } };
 				onChange(newTopic);
-				updateDb(newTopic);
 			}}
 		/>
 	</div>
 	<div class="mt-auto">
-		<button
-			class="del-btn w-full "
-			on:click={() => {
-				deleteDoc(docRef);
-				onRemove(currentTopic.id);
-			}}>Delete</button
-		>
+		{#if onCreate}
+			<button
+				class="create-btn w-full "
+				on:click={() => {
+					onCreate(currentTopic.id);
+				}}>Create</button
+			>
+		{:else}
+			<button
+				class="del-btn w-full "
+				on:click={() => {
+					onRemove(currentTopic.id);
+				}}>Delete</button
+			>
+		{/if}
 	</div>
 </form>
 

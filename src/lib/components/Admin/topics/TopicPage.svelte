@@ -3,6 +3,8 @@
 	import LightBox from '$lib/components/utils/LightBox.svelte';
 	import EditTopic from './EditTopic.svelte';
 	import CreateTopic from './CreateTopic.svelte';
+	import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+	import { db } from '$lib/firebaseConfig/firebase';
 	/**
 	 * @type {any[]}
 	 */
@@ -51,10 +53,14 @@
 				}
 				return d;
 			});
+			const docRef = doc(db, 'card-envs', selectedEnvId, 'topics', t.id);
+			setDoc(docRef, ts);
 			onChange(ts);
 		}}
 		onRemove={(id) => {
 			onChange(topics.filter((t) => t.id !== id));
+			const docRef = doc(db, 'card-envs', selectedEnvId, 'topics', id);
+			deleteDoc(docRef).then((e) => console.log('res', e));
 			lbOpen = false;
 		}}
 		currentTopic={selectedTopic}
@@ -63,7 +69,12 @@
 
 <LightBox isOpen={clbOpen} close={() => (clbOpen = false)}
 	><CreateTopic
-		onChange={(nt) => {
+		onCreate={(nt) => {
+			console.log('onChange', nt);
+			const docRef = doc(db, 'card-envs', selectedEnvId, 'topics', nt.id);
+			setDoc(docRef, nt).catch((error) => {
+				console.log(error);
+			});
 			onChange([...topics, nt]);
 			clbOpen = false;
 		}}

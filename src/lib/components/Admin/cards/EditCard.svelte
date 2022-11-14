@@ -1,9 +1,16 @@
 <script>
+	import EditLinks from './edit/EditLinks.svelte';
+	import EditDescr from './../../Admin/cards/EditDescr.svelte';
+	import FieldThumb from './../../Admin/cards/FieldThumb.svelte';
+	import UploadFile from './../utils/edit/UploadFile.svelte';
 	import Logo from '$lib/components/navigationBar/Logo.svelte';
 	import LightBox from '$lib/components/utils/LightBox.svelte';
 	import { db } from '$lib/firebaseConfig/firebase';
-	import { collection, doc } from 'firebase/firestore';
+	import { collection, doc, getDocs } from 'firebase/firestore';
 	import TopicsCard from './edit/EditCardTopics/index.svelte';
+	import EditTitle from './EditTitle.svelte';
+
+	import TopicsThumb from './TopicsThumb.svelte';
 
 	export let selectedEnvId;
 	export let currentCard = {
@@ -15,10 +22,10 @@
 		topics: [],
 		loc: { longitude: 4.39, latitude: 50.82 }
 	};
-
-	$: console.log('currentCard', currentCard.id);
-	$: docRef = doc(db, 'card-envs', selectedEnvId, 'cards', currentCard.id);
-	$: collectionRef = collection(db, 'card-envs', selectedEnvId, 'cards');
+	export let onChange;
+	export let allTopics;
+	export let onRemove;
+	export let onCreate;
 
 	const TITLE = 'title';
 	const TOPICS = 'topic';
@@ -28,44 +35,82 @@
 
 	let selectedField;
 
-	let openField;
+	console.log('currentCard', currentCard);
+
+	$: getDocs(collection(db, 'card-envs', selectedEnvId, 'topics')).then((snap) => {
+		allTopics = snap.docs.map((doc) => doc.data());
+	});
 </script>
 
-<div class="flex flex-wrap">
-	<button
-		class="h-[36px] w-[40%] mt-[5%] mx-auto 
-			border border-c-black 
-			text-white bg-c-black hover:bg-c-dark-gray"
-		on:click={() => (openTopics = true)}
-	>
-		Topics
-	</button>
-	<button
-		class="h-[36px] w-[40%] mt-[3%] mx-auto 
-			border border-c-black 
-			text-white bg-c-black hover:bg-c-dark-gray"
-		on:click={() => (openLinks = true)}
-	>
-		Links
-	</button>
-
-	<button
-		class="h-[36px] w-[40%] mt-[3%] mx-auto 
-			border border-c-black 
-			text-white bg-c-black hover:bg-c-dark-gray"
-		on:click={() => (openActivity = true)}
-	>
-		Activity
-	</button>
-
-	<LightBox isOpen={selectedField === TOPICS} close={() => (openTopics = false)}>
-		<EditCardTopics {selectedEnvId} selectedCardId={currentCard.id} />
-	</LightBox>
-
-	<!-- <LightBox isOpen={openLinks} close={() => (openLinks = false)}>
-		<EditLinks {selectedEnvironment} bind:currentCard {docRef} />
-	</LightBox>
-	<LightBox isOpen={openActivity} close={() => (openActivity = false)}>
-		<ActivityCard {selectedEnvironment} bind:currentCard {docRef} />
-	</LightBox> -->
+<div class="flex flex-col overflow-y-auto">
+	<div class="mb-3 flex-shrink-0">
+		<UploadFile
+			url={currentCard.img?.url}
+			onChange={(url, name) => {
+				onChange({ ...currentCard, img: { url, name } });
+			}}
+		/>
+	</div>
+	<div class="flex flex-wrap gap-2 flex-shrink-1 overflow-y-auto">
+		<FieldThumb name="Title" value={currentCard.title} onClick={() => (selectedField = TITLE)} />
+		<FieldThumb
+			type="string"
+			name="Description"
+			value={currentCard.description}
+			onClick={() => (selectedField = DESCR)}
+		/>
+		<TopicsThumb
+			{allTopics}
+			topicIds={currentCard.topics}
+			onClick={() => (selectedField = TOPICS)}
+		/>
+		<FieldThumb
+			type="array"
+			name="Links"
+			value={currentCard.links}
+			onClick={() => (selectedField = LINKS)}
+		/>
+		<FieldThumb
+			type="array"
+			name="Activity"
+			value={currentCard.activity}
+			onClick={() => (selectedField = ACTIVITY)}
+		/>
+	</div>
+	{#if !!onRemove}
+		<button class="del-btn mt-3" on:click={() => onRemove(currentCard)}>Remove Card</button>
+	{/if}
+	{#if !!onCreate}
+		<button class="create-btn mt-3" on:click={() => onCreate(currentCard)}>Create Card</button>
+	{/if}
 </div>
+
+<LightBox
+	isOpen={selectedField === TITLE}
+	title={selectedField}
+	close={() => (selectedField = null)}
+	height={null}
+>
+	<EditTitle value={currentCard.title} onChange={(title) => onChange({ ...currentCard, title })} />
+</LightBox>
+
+<LightBox
+	isOpen={selectedField === DESCR}
+	title={selectedField}
+	close={() => (selectedField = null)}
+	height={null}
+>
+	<EditDescr
+		value={currentCard.description}
+		onChange={(description) => onChange({ ...currentCard, description })}
+	/>
+</LightBox>
+
+<LightBox
+	isOpen={selectedField === LINKS}
+	title={selectedField}
+	close={() => (selectedField = null)}
+	height={null}
+>
+	<EditLinks links={currentCard.links} onChange={(links) => onChange({ ...currentCard, links })} />
+</LightBox>

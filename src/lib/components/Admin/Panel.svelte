@@ -2,43 +2,35 @@
 	import ArrowRightDropCircleOutline from 'svelte-material-icons/ArrowRightDropCircleOutline.svelte';
 
 	export let title = '';
-	export let selectedEnvironment = true;
 
 	let expanded = false;
 </script>
 
 <!-- Main block -->
 <div
-	class="panel-container h-[3rem] 
-		border-2 border-c-black custom-shadow
-		overflow-hidden 
-		{expanded ? 'expanded' : ''}"
+	class="transition-all {expanded
+		? 'expanded '
+		: ''} p-2 flex flex-col border-2 border-c-black custom-shadow }"
 >
 	<!-- Title container -->
 	<div
 		on:keydown={() => null}
-		class="flex h-[3rem] w-full justify-center "
+		class="flex {expanded ? 'mb-3' : ''}  w-full justify-center cursor-pointer flex-shrink-0 "
 		on:click={() => {
-			if (selectedEnvironment) expanded = !expanded;
+			expanded = !expanded;
 		}}
 	>
-		<!-- Icon -->
-		<span
-			class="my-auto mr-2 transition-all
-			{expanded ? 'rotate' : ''}"
-		>
+		<span class=" mr-2 transition-all {expanded ? 'rotate' : ''}">
 			<ArrowRightDropCircleOutline size={24} />
 		</span>
-		<!-- Title content -->
-		<h1 class="my-auto text-xl font-medium">
+		<h1 class=" text-xl font-medium">
 			{title}
 		</h1>
 	</div>
 
-	<!-- Body's block -->
-	<div class="h-[37rem] w-full p-2 flex flex-col">
+	{#if expanded}
 		<slot />
-	</div>
+	{/if}
 </div>
 
 <style>
@@ -47,7 +39,7 @@
 	}
 
 	.expanded {
-		height: 40rem;
+		max-height: 40rem;
 	}
 
 	.rotate {

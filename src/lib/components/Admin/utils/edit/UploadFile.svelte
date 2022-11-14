@@ -62,7 +62,7 @@
 				<div class="italic m-auto">Loading...</div>
 			</div>
 		{/if}
-		{#if url !== null && !loading}
+		{#if !!url && !loading}
 			<img
 				style="height:200px"
 				class="m-auto w-full max-w-full object-cover "
@@ -70,7 +70,7 @@
 				alt={url}
 			/>
 		{/if}
-		{#if !loading && url === null}
+		{#if !loading && !url}
 			<div style="height:200px" class="flex text-c-gray cursor-pointer border">
 				<div class="italic m-auto">No image found</div>
 			</div>
