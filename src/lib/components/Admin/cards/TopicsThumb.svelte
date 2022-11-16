@@ -7,6 +7,7 @@
 	 */
 	export let selectedEnvId;
 	export let topicIds;
+	export let onClick;
 
 	export let allTopics;
 
@@ -14,7 +15,7 @@
 </script>
 
 {#if allTopics && topics}
-	<FieldThumb type="array" name="Topics" value={topics.map((d) => d.title)} />
+	<FieldThumb {onClick} type="array" name="Topics" value={topics.map((d) => d.title)} />
 {:else}
-	<FieldThumb type="string" name="Topics" value="loading..." />
+	<FieldThumb {onClick} type="string" name="Topics" value="loading..." />
 {/if}

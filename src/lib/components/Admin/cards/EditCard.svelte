@@ -9,6 +9,7 @@
 	import { collection, doc, getDocs } from 'firebase/firestore';
 	import TopicsCard from './edit/EditCardTopics/index.svelte';
 	import EditTitle from './EditTitle.svelte';
+	import EditTopics from './EditTopics.svelte';
 
 	import TopicsThumb from './TopicsThumb.svelte';
 
@@ -23,15 +24,15 @@
 		loc: { longitude: 4.39, latitude: 50.82 }
 	};
 	export let onChange;
-	export let allTopics;
 	export let onRemove;
 	export let onCreate;
 
 	const TITLE = 'title';
-	const TOPICS = 'topic';
+	const TOPICS = 'topics';
 	const LINKS = 'links';
 	const DESCR = 'descr';
 	const ACTIVITY = 'activity';
+	let allTopics;
 
 	let selectedField;
 
@@ -113,4 +114,16 @@
 	height={null}
 >
 	<EditLinks links={currentCard.links} onChange={(links) => onChange({ ...currentCard, links })} />
+</LightBox>
+
+<LightBox
+	isOpen={selectedField === TOPICS}
+	title={selectedField}
+	close={() => (selectedField = null)}
+>
+	<EditTopics
+		topicIds={currentCard.topics}
+		{allTopics}
+		onChange={(topics) => onChange({ ...currentCard, topics })}
+	/>
 </LightBox>
