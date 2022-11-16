@@ -2,6 +2,7 @@
 	import ArrowRightDropCircleOutline from 'svelte-material-icons/ArrowRightDropCircleOutline.svelte';
 
 	export let title = '';
+	export let fullHeight = false;
 
 	let expanded = false;
 </script>
@@ -10,12 +11,12 @@
 <div
 	class="transition-all {expanded
 		? 'expanded '
-		: ''} p-2 flex flex-col border-2 border-c-black custom-shadow }"
+		: ''} p-2 flex flex-col border-2 border-c-black custom-shadow "
+	style={fullHeight && expanded ? 'min-height:40rem' : ''}
 >
-	<!-- Title container -->
 	<div
 		on:keydown={() => null}
-		class="flex {expanded ? 'mb-3' : ''}  w-full justify-center cursor-pointer flex-shrink-0 "
+		class="flex {expanded ? 'mb-3' : ''}  w-full flex-none justify-center cursor-pointer "
 		on:click={() => {
 			expanded = !expanded;
 		}}

@@ -4,9 +4,10 @@
 	import CardsPage from './CardsPage.svelte';
 
 	export let selectedEnvId;
+	export let onChange;
+	export let cards;
 
 	let loading = false;
-	let cards = [];
 	// let currentCard = {
 	// 	id: 'null',
 	// 	title: '',
@@ -17,22 +18,12 @@
 	// 	loc: { longitude: 4.39, latitude: 50.82 }
 	// };
 
-	$: {
-		loading = true;
-		getDocs(collection(db, 'card-envs', selectedEnvId, 'cards')).then((snapRef) => {
-			cards = snapRef.docs.map((doc) => {
-				return doc.data();
-			});
-			loading = false;
-		});
-	}
-
+	$: console.log('loading', loading);
 	let lbStaticLoader = false;
 </script>
 
-{#if loading}
+{#if cards === undefined}
 	<div>Loading...</div>
-{/if}
-{#if !loading}
-	<CardsPage {cards} {selectedEnvId} onChange={(cs) => (cards = cs)} />
+{:else}
+	<CardsPage {cards} {selectedEnvId} onChange={(cs) => onChange(cs)} />
 {/if}

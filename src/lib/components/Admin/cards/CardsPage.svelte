@@ -7,6 +7,7 @@
 	import { db } from '$lib/firebaseConfig/firebase';
 	import { v4 as uuidv4 } from 'uuid';
 	import NewCard from './NewCard.svelte';
+	import StaticLoader from '../environments/StaticLoader.svelte';
 	export let cards = [];
 	export let selectedEnvId;
 	export let onChange;
@@ -69,3 +70,7 @@
 		}}
 	/>
 </LightBox>
+
+<LightBox title="Load Cards" isOpen={slOpen} close={() => (slOpen = false)}
+	><StaticLoader /></LightBox
+>

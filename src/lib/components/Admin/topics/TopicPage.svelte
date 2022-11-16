@@ -1,5 +1,5 @@
 <script>
-	import PreviewTopic from './PreviewT.svelte';
+	import PreviewTopic from '$lib/components/PreviewCard.svelte';
 	import LightBox from '$lib/components/utils/LightBox.svelte';
 	import EditTopic from './EditTopic.svelte';
 	import CreateTopic from './CreateTopic.svelte';
@@ -41,7 +41,7 @@
 		/>
 	{/each}
 </div>
-<button class="create-btn mt-auto mb-1" on:click={() => (clbOpen = true)}>Create Topic</button>
+<button class="create-btn mt-auto mt-3" on:click={() => (clbOpen = true)}>Create Topic</button>
 
 <LightBox title={selectedTopic?.title} isOpen={lbOpen} close={() => (lbOpen = false)}>
 	<EditTopic

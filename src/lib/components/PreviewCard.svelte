@@ -8,7 +8,7 @@
 	on:click={onClick}
 	on:keydown={onClick}
 	class="flex flex-col h-36 w-28 p-2 relative overflow-hidden
-		bg-white border-2 border-c-black drop-shadow-md"
+		bg-white border-2 border-c-black drop-shadow-md cursor-pointer"
 >
 	<h1 class="shrink-0 title">{title}</h1>
 	<img class="flex-grow object-cover" src={img?.url} alt={img?.name} />
