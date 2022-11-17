@@ -1,0 +1,41 @@
+<script>
+	import LightBox from '$lib/components/utils/LightBox.svelte';
+	import EditQuiz from './EditQuiz.svelte';
+
+	export let activity;
+	export let onChange;
+
+	const QUIZ = 'Quiz';
+	const GEOCACHING = 'GeoCaching';
+	const HANGMAN = 'Hangman';
+	const ACTIVITIES = [QUIZ, GEOCACHING, HANGMAN];
+	/**
+	 * @type {string | null}
+	 */
+	let selectedActivity = null;
+</script>
+
+<div class="flex flex-wrap gap-2">
+	{#each ACTIVITIES as a}
+		<button class="p-2 text-xl border-2" on:click={() => (selectedActivity = a)}>{a}</button>
+	{/each}
+</div>
+
+<LightBox isOpen={selectedActivity === QUIZ} close={() => (selectedActivity = null)}>
+	<EditQuiz {activity} questions={activity?.value?.questions} />
+</LightBox>
+
+<LightBox
+	height={null}
+	isOpen={selectedActivity === GEOCACHING}
+	close={() => (selectedActivity = null)}
+>
+	<div>Not yet implemented</div>
+</LightBox>
+<LightBox
+	height={null}
+	isOpen={selectedActivity === HANGMAN}
+	close={() => (selectedActivity = null)}
+>
+	<div>Not yet implemented</div>
+</LightBox>

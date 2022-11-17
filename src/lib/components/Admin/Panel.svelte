@@ -2,7 +2,7 @@
 	import ArrowRightDropCircleOutline from 'svelte-material-icons/ArrowRightDropCircleOutline.svelte';
 
 	export let title = '';
-	export let fullHeight = false;
+	export let height = null;
 
 	let expanded = false;
 </script>
@@ -12,7 +12,7 @@
 	class="transition-all {expanded
 		? 'expanded '
 		: ''} p-2 flex flex-col border-2 border-c-black custom-shadow "
-	style={fullHeight && expanded ? 'min-height:40rem' : ''}
+	style={height !== null && expanded ? `min-height:${height}` : ''}
 >
 	<div
 		on:keydown={() => null}
@@ -24,7 +24,7 @@
 		<span class=" mr-2 transition-all {expanded ? 'rotate' : ''}">
 			<ArrowRightDropCircleOutline size={24} />
 		</span>
-		<h1 class=" text-xl font-medium">
+		<h1 class=" text-xl font-medium crop">
 			{title}
 		</h1>
 	</div>
@@ -49,5 +49,12 @@
 
 	.custom-shadow {
 		box-shadow: 5px 5px 5px #a6a29f;
+	}
+
+	.crop {
+		white-space: nowrap;
+		overflow: hidden;
+		display: block;
+		text-overflow: ellipsis;
 	}
 </style>

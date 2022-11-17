@@ -39,7 +39,7 @@
 	};
 </script>
 
-<div class="h-[35rem] overflow-auto flex flex-col">
+<div class="overflow-auto flex flex-col">
 	{#each envs as env}
 		<div class="flex mb-2">
 			<button

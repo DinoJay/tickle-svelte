@@ -1,10 +1,6 @@
 <script>
-	import DeleteButton from '$lib/components/Admin/utils/block/DeleteButton.svelte';
-	import EditImage from '$lib/components/Admin/utils/edit/UploadFile.svelte';
 	import EditText from '$lib/components/Admin/utils/edit/EditText.svelte';
 
-	export let height = 0;
-	export let width = 0;
 	export let question = {};
 	export let saveActivity = () => {};
 
@@ -20,12 +16,8 @@
 </script>
 
 <div class="flex flex-col bg-white overflow-y-auto" style="height: {height}px;width: {width}px;">
-	<EditText
-		labelName={'Title'}
-		labelFor={'title'}
-		bind:bindValue={question.text}
-		onInput={() => saveActivity()}
-	/>
+	<input bind:value={question.text} on />
+	<EditText labelName={'Title'} labelFor={'title'} bind:bindValue={question.text} />
 
 	<!-- <EditImage
 		labelName={'Image'}

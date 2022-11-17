@@ -1,4 +1,5 @@
 <script>
+	import Logo from '$lib/components/navigationBar/Logo.svelte';
 	import UploadFile from './../utils/edit/UploadFile.svelte';
 	import { db } from '$lib/firebaseConfig/firebase';
 	import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
@@ -51,6 +52,7 @@
 			url={currentTopic.img?.url}
 			onChange={(url, name) => {
 				const newTopic = { ...currentTopic, img: { name, url } };
+				console.log('new topic', newTopic);
 				onChange(newTopic);
 			}}
 		/>

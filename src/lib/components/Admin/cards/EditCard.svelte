@@ -10,6 +10,7 @@
 	import TopicsCard from './edit/EditCardTopics/index.svelte';
 	import EditTitle from './EditTitle.svelte';
 	import EditTopics from './EditTopics.svelte';
+	import EditActivity from './EditActivity.svelte';
 
 	import TopicsThumb from './TopicsThumb.svelte';
 
@@ -125,5 +126,17 @@
 		topicIds={currentCard.topics}
 		{allTopics}
 		onChange={(topics) => onChange({ ...currentCard, topics })}
+	/>
+</LightBox>
+
+<LightBox
+	isOpen={selectedField === ACTIVITY}
+	title={selectedField}
+	close={() => (selectedField = null)}
+	height={null}
+>
+	<EditActivity
+		activity={currentCard.activity}
+		onChange={(activity) => onChange({ ...currentCard, activity })}
 	/>
 </LightBox>

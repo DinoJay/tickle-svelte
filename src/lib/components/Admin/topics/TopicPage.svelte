@@ -5,6 +5,7 @@
 	import CreateTopic from './CreateTopic.svelte';
 	import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebaseConfig/firebase';
+	import Logo from '$lib/components/navigationBar/Logo.svelte';
 	/**
 	 * @type {any[]}
 	 */
@@ -54,7 +55,8 @@
 				return d;
 			});
 			const docRef = doc(db, 'card-envs', selectedEnvId, 'topics', t.id);
-			setDoc(docRef, ts);
+
+			setDoc(docRef, t).catch((e) => console.log('err', e));
 			onChange(ts);
 		}}
 		onRemove={(id) => {

@@ -11,7 +11,8 @@
 	// @ts-ignore
 	import { store, loadCardEnvironments, setEnvs } from '/src/stores/index';
 
-	// uploads images : https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=3.49.0
+	//	import { updateCurrentUser } from 'firebase/auth';
+	//uploads images : https://svelte.dev/repl/b17c13d4f1bb40799ccf09e0841ddd90?version=3.49.0
 
 	/**
 	 * selectedEnvironment - The current environment selected in the admin page
@@ -67,12 +68,17 @@
 			<Cards {cards} {selectedEnvId} onChange={setCards} />
 		</Panel>
 
-		<Panel title={`Map`} fullHeight={true}>
+		<Panel title={`Map`} height={'40rem'}>
 			<Map {cards} {selectedEnvId} onChange={setCards} />
 		</Panel>
 	</div>
-{:else}
+{/if}
+{#if !$store?.currentUser?.admin === null}
 	<div class="absolute top-[50%] left-[calc(50%-8rem)] h-12 w-64 text-center">
 		You do not have the permission to acces this page.
 	</div>
+{/if}
+
+{#if $store?.currentUser?.admin === undefined}
+	<div class="absolute top-[50%] left-[calc(50%-8rem)] h-12 w-64 text-center">Loading...</div>
 {/if}

@@ -87,6 +87,7 @@
 			const file = e.target?.files;
 			loading = true;
 			const storageRef = ref(storage, `${fname}|${uuidv4()}`);
+			console.log('storage ref fname', fname);
 			onCompressed(e, (/** @type {string} */ dataUrl) => {
 				uploadString(storageRef, dataUrl, 'data_url').then((snapshot) => {
 					getDownloadURL(snapshot.ref).then((downloadURL) => {
