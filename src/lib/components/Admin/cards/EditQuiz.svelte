@@ -1,17 +1,30 @@
 <script>
 	import EditQuestion from './EditQuestion.svelte';
-	import LightBox from '$lib/components/utils/LightBox.svelte';
-	import Panel from '$lib/components/Admin/Panel.svelte';
 	import { v4 as uuidv4 } from 'uuid';
+	import EditNewQuestion from './EditNewQuestion.svelte';
+	import Logo from '$lib/components/navigationBar/Logo.svelte';
 
 	export let questions = [];
 	export let onChange;
 
-	const nq = { id: null, answers: [], img: { url: '', name: '' }, text: '' };
-	let lb = false;
-	let sq = null;
+	let sq = false;
 
-	const onQuestionChange = (q) => onChange([...questions, q]);
+	let selQIndex = null;
+
+	$: selQ = questions[selQIndex];
+
+	$: console.log('selq', selQ);
+
+	const onQuestionAdd = (q) => onChange([...questions, q]);
+	const onQuestionChange = (q) => {
+		const nqs = questions.map((d) => {
+			if (q.id === d.id) {
+				return q;
+			}
+			return d;
+		});
+		onChange(nqs);
+	};
 	console.log('questions', questions);
 </script>
 
@@ -20,18 +33,27 @@
 		<div class="m-auto text-xl text-gray-500">No Questions added!</div>
 	{/if}
 	{#each questions as q, i}
-		<button class="crop p-2 border-2" on:click={() => (sq = q)}>
+		<button
+			class="crop p-2 border-2"
+			on:click={() => {
+				selQIndex = i;
+			}}
+		>
 			<span class="font-bold">Q{i + 1}:</span><span class="ml-1">{q.text}</span>
 		</button>
 	{/each}
 </div>
-<button onClick={() => (lb = true)} class="w-full border-2 mt-auto p-2" on:click={() => (sq = nq)}>
-	Add a question
-</button>
+<button class="w-full border-2 mt-auto p-2" on:click={() => (sq = true)}> Add a question </button>
+
+<EditNewQuestion
+	onCreate={() => onQuestionAdd({ ...sq, id: uuidv4() })}
+	open={sq}
+	onClose={() => (sq = false)}
+/>
 
 <EditQuestion
-	q={sq}
-	onCreate={sq?.id === null ? () => onQuestionChange({ ...sq, id: uuidv4() }) : null}
-	onChange={sq?.id !== null ? () => onQuestionChange : (q) => (sq = q)}
-	onClose={() => (sq = null)}
+	q={selQ}
+	open={selQIndex !== null}
+	onChange={onQuestionChange}
+	onClose={() => (selQIndex = null)}
 />

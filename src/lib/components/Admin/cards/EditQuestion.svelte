@@ -5,6 +5,7 @@
 	export let onChange;
 	export let onCreate;
 	export let onClose;
+	export let open;
 
 	$: textQ = q ? q.text : null;
 	$: console.log('q', q);
@@ -13,7 +14,7 @@
 	$: console.log('q', q);
 </script>
 
-<LightBox title={textQ} isOpen={!!q} close={onClose}>
+<LightBox title={textQ} isOpen={open} close={onClose}>
 	<div class="flex flex-col flex-grow overflow-y-auto">
 		<div class="mb-3">
 			<UploadFile url={q.img?.url} />
@@ -25,7 +26,7 @@
 				placeholder="please add question!"
 				rows="4"
 				value={textQ}
-				on:input={(e) => onChange({ ...q, text: e.target.value })}
+				on:change={(e) => onChange({ ...q, text: e.target.value })}
 			/>
 		</div>
 		<div class="flex-grow flex flex-col">
@@ -46,7 +47,7 @@
 				>
 			</div>
 		</div>
-		{#if onCreate !== null}
+		{#if onCreate}
 			<button class="create-btn mt-3" on:click={onCreate}>Add new Question</button>
 		{/if}
 	</div>
