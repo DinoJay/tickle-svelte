@@ -50,11 +50,4 @@
 	.custom-shadow {
 		box-shadow: 5px 5px 5px #a6a29f;
 	}
-
-	.crop {
-		white-space: nowrap;
-		overflow: hidden;
-		display: block;
-		text-overflow: ellipsis;
-	}
 </style>

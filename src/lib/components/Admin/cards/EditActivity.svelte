@@ -22,7 +22,11 @@
 </div>
 
 <LightBox isOpen={selectedActivity === QUIZ} close={() => (selectedActivity = null)}>
-	<EditQuiz {activity} questions={activity?.value?.questions} />
+	<EditQuiz
+		{activity}
+		questions={activity?.value}
+		onChange={(questions) => onChange({ type: QUIZ, value: questions })}
+	/>
 </LightBox>
 
 <LightBox

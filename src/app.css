@@ -54,3 +54,15 @@
 .create-btn {
 	@apply bg-green-500 text-white p-2 drop-shadow-sm
 }
+
+
+.form-text {
+	@apply text-gray-500 text-lg;
+}
+
+.crop {
+	white-space: nowrap;
+	overflow: hidden;
+	display: block;
+	text-overflow: ellipsis;
+}
