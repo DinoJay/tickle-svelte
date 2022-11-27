@@ -12,7 +12,7 @@
 	class="transition-all {expanded
 		? 'expanded '
 		: ''} p-2 flex flex-col border-2 border-c-black custom-shadow "
-	style={height !== null && expanded ? `min-height:${height}` : ''}
+	style={height !== null && expanded ? `height:${height}` : ''}
 >
 	<div
 		on:keydown={() => null}

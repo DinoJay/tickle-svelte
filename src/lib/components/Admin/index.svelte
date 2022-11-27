@@ -47,30 +47,35 @@
 </script>
 
 {#if $store?.currentUser?.admin}
-	<div
-		class="grid grid-cols-1 gap-3 m-2
-        lg:grid-cols-2 lg:m-5"
-	>
-		<Panel title="Environments">
-			<Environments
-				{envs}
-				{selectedEnv}
-				onSelectEnv={(id) => (selectedEnvId = id)}
-				onChange={(envs) => setEnvs(envs)}
-			/>
-		</Panel>
+	<div class="grid grid-cols-1 gap-3 m-2 lg:grid-cols-2 lg:m-5">
+		<div>
+			<Panel title="Environments">
+				<Environments
+					{envs}
+					{selectedEnv}
+					onSelectEnv={(id) => (selectedEnvId = id)}
+					onChange={(envs) => setEnvs(envs)}
+				/>
+			</Panel>
+		</div>
 
-		<Panel title={'Topics'}>
-			<Topics {selectedEnvId} />
-		</Panel>
+		<div>
+			<Panel title={'Topics'}>
+				<Topics {selectedEnvId} />
+			</Panel>
+		</div>
 
-		<Panel title={'Cards'}>
-			<Cards {cards} {selectedEnvId} onChange={setCards} />
-		</Panel>
+		<div>
+			<Panel title={'Cards'}>
+				<Cards {cards} {selectedEnvId} onChange={setCards} />
+			</Panel>
+		</div>
 
-		<Panel title={`Map`} height={'40rem'}>
-			<Map {cards} {selectedEnvId} onChange={setCards} />
-		</Panel>
+		<div>
+			<Panel title={`Map`} height={'40rem'}>
+				<Map {cards} {selectedEnvId} onChange={setCards} />
+			</Panel>
+		</div>
 	</div>
 {/if}
 {#if !$store?.currentUser?.admin === null}

@@ -59,7 +59,7 @@
 				<h2 class="text-gray-500 text-2xl">{n.key.toUpperCase()}</h2>
 				<ul class="ml-3">
 					{#each n.values as c}
-						<li on:click={() => onClick(c)}>{c.title}</li>
+						<li class="cursor-pointer" on:click={() => onClick(c)}>{c.title}</li>
 					{/each}
 				</ul>
 			</div>
