@@ -22,7 +22,8 @@
 		img: { name: '', url: '' },
 		activity: null,
 		topics: [],
-		loc: { longitude: 4.39, latitude: 50.82 }
+		loc: { longitude: 4.39, latitude: 50.82 },
+		links: []
 	};
 	export let onChange;
 	export let onRemove;
@@ -75,7 +76,7 @@
 		<FieldThumb
 			type="array"
 			name="Activity"
-			value={currentCard.activity}
+			value={currentCard.activity?.type || 'None'}
 			onClick={() => (selectedField = ACTIVITY)}
 		/>
 	</div>

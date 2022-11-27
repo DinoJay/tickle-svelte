@@ -5,6 +5,7 @@
 	import EditCard from './EditCard.svelte';
 	export let selectedEnvId;
 	export let onCreate;
+	export let currentCard = {};
 
 	let newCard = {
 		id: 'null',
@@ -13,8 +14,11 @@
 		img: { name: '', url: '' },
 		activity: null,
 		topics: [],
-		loc: { longitude: 4.39, latitude: 50.82 }
+		loc: { longitude: 4.39, latitude: 50.82 },
+		links: [],
+		...currentCard
 	};
+	console.log('currentCard', currentCard);
 </script>
 
 <EditCard

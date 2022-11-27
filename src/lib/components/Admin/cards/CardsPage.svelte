@@ -7,7 +7,7 @@
 	import { db } from '$lib/firebaseConfig/firebase';
 	import { v4 as uuidv4 } from 'uuid';
 	import NewCard from './NewCard.svelte';
-	import StaticLoader from '../environments/StaticLoader.svelte';
+	import StaticLoader from './StaticLoader.svelte';
 	export let cards = [];
 	export let selectedEnvId;
 	export let onChange;
@@ -72,5 +72,13 @@
 </LightBox>
 
 <LightBox title="Load Cards" isOpen={slOpen} close={() => (slOpen = false)}
-	><StaticLoader /></LightBox
+	><StaticLoader
+		{selectedEnvId}
+		onCreate={(c) => {
+			lbNcOpen = false;
+			const docRef = doc(db, 'card-envs', selectedEnvId, 'cards', c.id);
+			setDoc(docRef, c);
+			onChange([c, ...cards]);
+		}}
+	/></LightBox
 >

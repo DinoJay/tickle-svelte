@@ -1,4 +1,5 @@
 <script>
+	import Check from 'svelte-material-icons/Check.svelte';
 	import LightBox from '$lib/components/utils/LightBox.svelte';
 	import EditQuiz from './EditQuiz.svelte';
 
@@ -9,6 +10,7 @@
 	const GEOCACHING = 'GeoCaching';
 	const HANGMAN = 'Hangman';
 	const ACTIVITIES = [QUIZ, GEOCACHING, HANGMAN];
+
 	/**
 	 * @type {string | null}
 	 */
@@ -17,7 +19,10 @@
 
 <div class="flex flex-wrap gap-2">
 	{#each ACTIVITIES as a}
-		<button class="p-2 text-xl border-2" on:click={() => (selectedActivity = a)}>{a}</button>
+		<button
+			class="p-2 text-xl border-2 {activity.type === a ? 'bg-gray-500 text-white' : ''}"
+			on:click={() => (selectedActivity = a)}>{a}</button
+		>
 	{/each}
 </div>
 

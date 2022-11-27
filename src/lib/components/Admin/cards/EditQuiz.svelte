@@ -13,8 +13,6 @@
 
 	$: selQ = questions[selQIndex];
 
-	$: console.log('selq', selQ);
-
 	const onQuestionAdd = (q) => onChange([...questions, q]);
 	const onQuestionChange = (q) => {
 		const nqs = questions.map((d) => {
