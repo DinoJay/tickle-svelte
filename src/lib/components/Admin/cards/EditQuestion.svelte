@@ -7,6 +7,7 @@
 	export let onChange;
 	export let onCreate;
 	export let onClose;
+	export let onRemove;
 	export let open;
 
 	$: textQ = q ? q.text : null;
@@ -14,6 +15,16 @@
 	$: answers = q ? q.answers : [];
 	let nw = '';
 	$: console.log('q', q);
+
+	$: editAnswer = (a, o) => {
+		return {
+			...q,
+			answers: q.answers.map((b) => {
+				if (a.text === b.text) return { ...a, ...o };
+				return b;
+			})
+		};
+	};
 </script>
 
 <LightBox title={textQ} isOpen={open} close={onClose}>
@@ -36,17 +47,17 @@
 			<ul class="mb-2">
 				{#each answers as a}
 					<li class="flex">
-						<span>{a.text}</span>
+						<input
+							value={a.text}
+							on:change={(a) => {
+								const nq = editAnswer(a, { text: a.target.value.trim() });
+								onChange(nq);
+							}}
+						/>
 						<button
 							class="ml-auto"
 							on:click={() => {
-								const nq = {
-									...q,
-									answers: q.answers.map((b) => {
-										if (a.text === b.text) return { ...a, correct: !a.correct };
-										return b;
-									})
-								};
+								const nq = editAnswer(a, { correct: !a.correct });
 								onChange(nq);
 								nw = '';
 							}}
@@ -73,6 +84,9 @@
 		</div>
 		{#if onCreate}
 			<button class="create-btn mt-3" on:click={onCreate}>Add new Question</button>
+		{/if}
+		{#if onRemove}
+			<button class="del-btn mt-3" on:click={() => onRemove(q.id)}>Remove Question</button>
 		{/if}
 	</div>
 </LightBox>

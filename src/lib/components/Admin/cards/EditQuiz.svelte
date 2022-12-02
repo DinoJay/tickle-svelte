@@ -23,6 +23,13 @@
 		});
 		onChange(nqs);
 	};
+	const onQuestionRemove = (id) => {
+		const nqs = questions.filter((d) => {
+			return id !== d.id;
+		});
+		console.log('nqs', nqs);
+		onChange(nqs);
+	};
 	console.log('questions', questions);
 </script>
 
@@ -32,7 +39,7 @@
 	{/if}
 	{#each questions as q, i}
 		<button
-			class="crop p-2 border-2"
+			class="crop p-2 border-2 mb-1"
 			on:click={() => {
 				selQIndex = i;
 			}}
@@ -44,7 +51,10 @@
 <button class="w-full border-2 mt-auto p-2" on:click={() => (sq = true)}> Add a question </button>
 
 <EditNewQuestion
-	onCreate={() => onQuestionAdd({ ...sq, id: uuidv4() })}
+	onCreate={(q) => {
+		onQuestionAdd({ ...q, id: uuidv4() });
+		sq = false;
+	}}
 	open={sq}
 	onClose={() => (sq = false)}
 />
@@ -53,5 +63,9 @@
 	q={selQ}
 	open={selQIndex !== null}
 	onChange={onQuestionChange}
+	onRemove={(id) => {
+		onQuestionRemove(id);
+		selQIndex = null;
+	}}
 	onClose={() => (selQIndex = null)}
 />

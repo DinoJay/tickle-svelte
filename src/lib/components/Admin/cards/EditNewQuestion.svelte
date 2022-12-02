@@ -8,4 +8,4 @@
 	export let open;
 </script>
 
-<EditQuestion {open} q={sq} {onCreate} onChange={(q) => (sq = q)} {onClose} />
+<EditQuestion {open} q={sq} onCreate={() => onCreate(sq)} onChange={(q) => (sq = q)} {onClose} />

@@ -20,7 +20,7 @@
 <div class="flex flex-wrap gap-2">
 	{#each ACTIVITIES as a}
 		<button
-			class="p-2 text-xl border-2 {activity.type === a ? 'bg-gray-500 text-white' : ''}"
+			class="p-2 text-xl border-2 {activity?.type === a ? 'bg-gray-500 text-white' : ''}"
 			on:click={() => (selectedActivity = a)}>{a}</button
 		>
 	{/each}
