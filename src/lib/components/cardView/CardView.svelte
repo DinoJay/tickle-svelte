@@ -18,6 +18,8 @@
 	$: curCard = cards?.find((card) => card.id === selectedCardId);
 	$: if ($store.envs) cards = $store.envs?.find((env) => env.id === selectedEnvironment)?.cards;
 	$: if (cards) centerLocation = cards.find((card) => card.id === selectedCardId)?.loc;
+
+	$: console.log('curCard', curCard);
 </script>
 
 <div class="flex flex-col h-[calc(100vh-4rem)] w-full relative">
@@ -47,9 +49,10 @@
 </div>
 <Card
 	open={!!selectedCardId}
-	{...curCard}
+	selectedEnvId={selectedEnvironment}
 	onClose={() => (selectedCardId = null)}
 	onActivitySubmit={(sub) => {}}
+	{...curCard}
 />
 {#if selectedEnvironment === 'undefined'}
 	<SelectEnvironment {selectedEnvironment} isOpen={true} isMandatory={true} />

@@ -1,12 +1,13 @@
 <script>
 	import { onMount } from 'svelte';
 	import { db } from '$lib/firebaseConfig/firebase';
-	import { collection, getDocs } from 'firebase/firestore';
+	import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 	import { store } from '/src/stores/index';
 	import LightBox from '$lib/components/utils/LightBox.svelte';
 	import Quiz from '$lib/components/Card/Challenge/Quiz/index.svelte';
 	import Hangman from '$lib/components/Card/Challenge/Hangman/Hangman.svelte';
 	import GeoCatching from './Challenge/geoCaching/geoCaching.svelte';
+	import Activity from './Challenge/Activity.svelte';
 
 	export let title = '';
 	export let description = '';
@@ -18,20 +19,25 @@
 	export let open = false;
 	export let onClose;
 	export let onChange;
+	export let selectedEnvId;
 
 	let activityOpen = false;
 
-	const activityInformation = {
+	$: uid = $store.currentUser.uid;
+	$: activityInformation = {
 		completed: false,
 		date: new Date().getTime(),
 		cardId: id,
 		envId: envId,
 		type: activity?.type,
 		succeeded: false,
-		uid: $store.currentUser.uid,
+		uid,
 		score: 0,
 		maxScore: 0
 	};
+
+	$: console.log('activity', activity);
+	$: console.log('links', links);
 </script>
 
 <LightBox {title} isOpen={open} close={onClose}>
@@ -39,14 +45,17 @@
 	<p class="max-h-32 mb-3 overflow-y-auto ">
 		{description}
 	</p>
-	<div>
-		{#each links as l}
-			<div><a target="_blank" class="text-blue-500" href={l}>{l}</a></div>
-		{/each}
-	</div>
+	{#if links}
+		<div>
+			{#each links as l}
+				<div><a target="_blank" class="text-blue-500" href={l}>{l}</a></div>
+			{/each}
+		</div>
+	{/if}
 	<button
 		on:click={() => {
 			activityOpen = true;
+			console.log('click', activity, 'activityOpen', activityOpen);
 		}}
 		class="mt-auto w-full bg-c-black text-white text-xl p-2"
 	>
@@ -54,23 +63,16 @@
 	</button>
 </LightBox>
 
-<LightBox
-	title={activity?.type}
-	isOpen={activityOpen}
-	close={() => {
+<Activity
+	open={activityOpen}
+	onClose={() => {
 		activityOpen = false;
 	}}
->
-	{#if activity?.type == 'Quiz'}
-		<Quiz
-			{activity}
-			onSubmit={(resps) => {
-				console.log('responses', resps);
-			}}
-		/>
-	{:else if activity?.type == 'Hangman'}
-		<Hangman {activity} {activityInformation} />
-	{:else if activity?.type == 'GeoCatching'}
-		<GeoCatching {activity} {activityInformation} />
-	{/if}
-</LightBox>
+	{activity}
+	onSubmit={(response) => {
+		const docRef = doc(db, 'card-envs', selectedEnvId, 'cards', id, 'activitySubmissions', uid);
+		const ac = { ...activityInformation, response };
+		console.log('submit', ac);
+		setDoc(docRef, ac);
+	}}
+/>

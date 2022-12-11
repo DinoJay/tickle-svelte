@@ -1,14 +1,13 @@
 <script>
+	import { GEOCACHING, HANGMAN } from './activityConsts.js';
 	import Check from 'svelte-material-icons/Check.svelte';
 	import LightBox from '$lib/components/utils/LightBox.svelte';
 	import EditQuiz from './EditQuiz.svelte';
+	import { QUIZ, GEOCACHING, HANGMAN } from './activityConsts';
 
 	export let activity;
 	export let onChange;
 
-	const QUIZ = 'Quiz';
-	const GEOCACHING = 'GeoCaching';
-	const HANGMAN = 'Hangman';
 	const ACTIVITIES = [QUIZ, GEOCACHING, HANGMAN];
 
 	/**

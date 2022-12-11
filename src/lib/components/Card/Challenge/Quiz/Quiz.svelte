@@ -6,6 +6,7 @@
 	export let activity;
 	export let onAnswerSubmit;
 	export let responses;
+	export let onResult;
 
 	// console.log('activity', activity);
 
@@ -19,6 +20,12 @@
 	$: console.log('cur img', img);
 
 	$: disabledNextQ = !curQ || !responses[curQ.id];
+
+	$: {
+		if (counter === questions.length) {
+			onResult(true);
+		}
+	}
 </script>
 
 <div class="flex flex-col cont bg-white">
