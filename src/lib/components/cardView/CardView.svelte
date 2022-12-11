@@ -1,43 +1,56 @@
 <script>
+	import { select } from 'd3-selection';
 	import { store } from '/src/stores/index';
 	import Slider from '$lib/components/cardView/utils/slider/Slider.svelte';
 	import TopicMap from '$lib/components/cardView/utils/topicMap/TopicMap.svelte';
 	import Map from '$lib/components/map/Map.svelte';
 	import MapButton from '$lib/components/cardView/utils/MapButton.svelte';
 	import SelectEnvironment from '$lib/components/environment/EnvironmentSelector.svelte';
+	import Card from '../Card/Card.svelte';
 
 	export let selectedEnvironment = 'undefined';
 
-	let cards = [{}];
-	let selectedCard = '';
+	let cards = undefined;
+	let selectedCardId = null;
 	let map = false;
 	let centerLocation = '';
 
+	$: curCard = cards?.find((card) => card.id === selectedCardId);
 	$: if ($store.envs) cards = $store.envs?.find((env) => env.id === selectedEnvironment)?.cards;
-	$: if (cards) centerLocation = cards.find((card) => card.id === selectedCard)?.loc;
+	$: if (cards) centerLocation = cards.find((card) => card.id === selectedCardId)?.loc;
 </script>
 
 <div class="flex flex-col h-[calc(100vh-4rem)] w-full relative">
 	{#if cards?.length > 0}
-		<Slider {cards} {selectedEnvironment} {selectedCard} onClick={(id) => (selectedCard = id)} />
+		<Slider
+			{cards}
+			{selectedEnvironment}
+			{selectedCardId}
+			onClick={(id) => (selectedCardId = id)}
+		/>
 
 		<div class={!map ? 'visible' : 'invisible'}>
 			<TopicMap
 				{cards}
-				{selectedCard}
+				selectedCard={curCard}
 				{selectedEnvironment}
 				onClick={(id) => (selectedCard = id)}
 			/>
 		</div>
 
 		<div class="absolute h-full w-full  {map ? 'visible' : 'invisible'}">
-			<Map {cards} {centerLocation} onClick={(id) => (selectedCard = id)} />
+			<Map {cards} {centerLocation} onClick={(id) => (selectedCardId = id)} />
 		</div>
 
 		<MapButton {map} onClick={() => (map = !map)} />
 	{/if}
-
-	{#if selectedEnvironment === 'undefined'}
-		<SelectEnvironment {selectedEnvironment} isOpen={true} isMandatory={true} />
-	{/if}
 </div>
+<Card
+	open={!!selectedCardId}
+	{...curCard}
+	onClose={() => (selectedCardId = null)}
+	onActivitySubmit={(sub) => {}}
+/>
+{#if selectedEnvironment === 'undefined'}
+	<SelectEnvironment {selectedEnvironment} isOpen={true} isMandatory={true} />
+{/if}

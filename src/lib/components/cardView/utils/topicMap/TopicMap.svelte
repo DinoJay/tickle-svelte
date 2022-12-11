@@ -73,7 +73,7 @@
 
 		const isSubset = (a, b) => {
 			const len = a.filter((d) => b.includes(d)).length;
-			console.log(a, b);
+			// console.log(a, b);
 			return a.length === len;
 		};
 
@@ -155,7 +155,7 @@
 		});
 
 		newNodes = setNodes.flatMap((d) => d.nodes);
-		console.log(newNodes);
+		// console.log(newNodes);
 	};
 
 	const getColor = (title) => {

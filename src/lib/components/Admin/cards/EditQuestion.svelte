@@ -30,7 +30,13 @@
 <LightBox title={textQ} isOpen={open} close={onClose}>
 	<div class="flex flex-col flex-grow overflow-y-auto">
 		<div class="mb-3">
-			<UploadFile url={q.img?.url} />
+			<UploadFile
+				url={q.img?.url}
+				onChange={(url, name) => {
+					console.log('urlURL', url, 'fname', name);
+					onChange({ ...q, img: { url, name } });
+				}}
+			/>
 		</div>
 		<div>
 			<h2 class="text-gray-500 form-text">Question:</h2>

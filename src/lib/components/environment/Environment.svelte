@@ -31,7 +31,7 @@
 				alt={img?.name}
 			/>
 			<div>
-				<p class="mb-3 overflow-y-auto" style="max-height:12rem">
+				<p class="my-3 overflow-y-auto" style="max-height:12rem">
 					{description}
 				</p>
 				<button

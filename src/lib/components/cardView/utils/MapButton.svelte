@@ -8,7 +8,7 @@
 <button
 	on:click={() => onClick()}
 	class="{map ? 'bg-c-light-green hover:bg-c-light-red' : 'bg-c-light-red hover:bg-c-light-green'} 
-		flex items-center h-16 w-16 absolute bottom-8 right-5 
+		flex items-center p-2 absolute bottom-8 right-5 
 		border-2 border-black rounded-full"
 >
 	<span class="m-auto spinner"> <CompassOutline size={32} /></span>

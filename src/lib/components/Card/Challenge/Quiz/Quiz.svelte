@@ -1,50 +1,56 @@
 <script>
+	import Logo from '$lib/components/navigationBar/Logo.svelte';
 	import Question from './Question.svelte';
 	import Result from './Result.svelte';
 
 	export let activity;
-	export let activityInformation = {};
+	export let onAnswerSubmit;
+	export let responses;
 
-	const questions = activity.value.questions;
+	// console.log('activity', activity);
+
+	const questions = activity.value;
 	const title = activity.value.title;
 
 	$: counter = 0;
 	$: curQ = questions[counter];
 	$: img = curQ?.img;
-	activityInformation.response = [];
 
-	/**
-	 * Method to add the responses of the users in the object activityInformation
-	 * @param resp - the user's reponse
-	 */
-	const updateQuizInfo = (resp) => {
-		if (activityInformation.response.some((item) => Object.keys(item)[0] === Object.keys(resp)[0]))
-			activityInformation.response.splice(activityInformation.response.indexOf(resp), 1);
-		else activityInformation.response = [...activityInformation.response, resp];
-	};
+	$: console.log('cur img', img);
+
+	$: disabledNextQ = !curQ || !responses[curQ.id];
 </script>
 
 <div class="flex flex-col cont bg-white">
 	{#if counter < questions.length}
-		<Question
-			{title}
-			{img}
-			{...curQ}
-			onChange={(responseId) => updateQuizInfo(responseId)}
-			{counter}
-		/>
+		{#key curQ.id}
+			<Question
+				{title}
+				{img}
+				{...curQ}
+				onChange={(answer) => {
+					onAnswerSubmit({ qid: curQ.id, answer });
+				}}
+				{counter}
+			/>
 
-		<button
-			class="h-[10%] w-full mt-auto bg-c-black
-			 	text-xl p-3 text-white"
-			on:click={() => {
-				counter++;
-			}}
-		>
-			Next Question
-		</button>
+			<button
+				class="w-full mt-auto bg-c-black
+			 	text-xl p-3 text-white {disabledNextQ ? 'disabled' : ''}"
+				disabled={disabledNextQ}
+				on:click={() => {
+					counter++;
+				}}
+			>
+				{#if counter < questions.length - 1}
+					Next Question
+				{:else}
+					See Result
+				{/if}
+			</button>
+		{/key}
 	{:else}
-		<Result {questions} {activityInformation} {title} />
+		<Result {questions} {responses} {title} />
 	{/if}
 </div>
 

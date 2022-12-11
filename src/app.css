@@ -66,3 +66,7 @@
 	display: block;
 	text-overflow: ellipsis;
 }
+
+.disabled {
+	@apply opacity-50
+}

@@ -16,7 +16,7 @@
 </script>
 
 <LightBox {isOpen} close={() => (isOpen = false)} {isMandatory}>
-	<div class="flex flex-col p-4 max-h-[600px] max-w-[500px] h-screen w-screen">
+	<div class="flex-grow flex flex-col overflow-y-auto">
 		<h2 class="text-3xl mb-1 text-c-black">Welcome to TICKLE!</h2>
 
 		<div class="grow overflow-y-auto">
